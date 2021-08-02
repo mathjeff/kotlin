@@ -17,6 +17,8 @@ object BinaryOptions : BinaryOptionRegistry() {
     val memoryModel by option<MemoryModel>()
 
     val freezing by option<Freezing>()
+
+    val sourceInfoType by option<SourceInfoType>()
 }
 
 open class BinaryOption<T : Any>(
