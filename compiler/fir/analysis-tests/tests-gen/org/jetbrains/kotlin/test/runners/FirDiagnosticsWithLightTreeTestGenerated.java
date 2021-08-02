@@ -5046,6 +5046,12 @@ public class FirDiagnosticsWithLightTreeTestGenerated extends AbstractFirDiagnos
             }
 
             @Test
+            @TestMetadata("hideBySeverity.kt")
+            public void testHideBySeverity() throws Exception {
+                runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/hideBySeverity.kt");
+            }
+
+            @Test
             @TestMetadata("IntersectionWithJavaString.kt")
             public void testIntersectionWithJavaString() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/intellij/IntersectionWithJavaString.kt");
