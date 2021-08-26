@@ -1,29 +1,14 @@
 // TARGET_BACKEND: JVM
 
-// MODULE: lib
-
-// FILE: test/UI.java
-package test;
-public class UI {
-    public static String foo() {
-        return "OK";
-    }
-}
-
-// FILE: Parent.java
-public class Parent {
-    public String getUI() { return "fail"; }
-}
-
-// MODULE: main(lib)
 // FILE: main.kt
 
-import test.UI;
+abstract class Parent<K>
+abstract class DefaultParent<K, X> : Parent<K>()
+abstract class TableDerived<K : CharSequence> : DefaultParent<K, Int>()
 
-class Derived : Parent() {
-    fun bar(): String = UI.foo()
-}
+fun foo(): Parent<out CharSequence> = TODO()
 
 fun box(): String {
-    return Derived().bar()
+    val w = foo() as? TableDerived ?: return "fail 1"
+    return "fail"
 }
