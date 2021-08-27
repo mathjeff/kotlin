@@ -230,6 +230,7 @@ enum class LanguageFeature(
     ProhibitInvalidCharsInNativeIdentifiers(KOTLIN_1_7, kind = BUG_FIX),
     DefinitelyNotNullTypeParameters(KOTLIN_1_7),
     DefinitelyNonNullableTypes(KOTLIN_1_7),
+    StopPropagatingDeprecationThroughOverrides(KOTLIN_1_7),
 
     // Temporarily disabled, see KT-27084/KT-22379
     SoundSmartcastFromLoopConditionForLoopAssignedVariables(sinceVersion = null, kind = BUG_FIX),
