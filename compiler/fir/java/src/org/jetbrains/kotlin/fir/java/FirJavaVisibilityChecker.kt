@@ -30,9 +30,9 @@ object FirJavaVisibilityChecker : FirVisibilityChecker() {
                 if (symbol.packageFqName() == useSiteFile.packageFqName) {
                     true
                 } else {
-                    val ownerId = symbol.getOwnerId()
-                    ownerId != null && canSeeProtectedMemberOf(
-                        containingDeclarations, dispatchReceiver, ownerId, session,
+                    val ownerLookupTag = symbol.getOwnerLookupTag()
+                    ownerLookupTag != null && canSeeProtectedMemberOf(
+                        containingDeclarations, dispatchReceiver, ownerLookupTag, session,
                         isPropertyOrFunction = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
                     )
                 }
