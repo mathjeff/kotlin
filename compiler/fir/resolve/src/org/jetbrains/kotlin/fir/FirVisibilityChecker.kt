@@ -118,7 +118,7 @@ abstract class FirVisibilityChecker : FirSessionComponent {
                 val ownerId = symbol.getOwnerLookupTag()
                 ownerId != null && canSeeProtectedMemberOf(
                     containingDeclarations, dispatchReceiver, ownerId, session,
-                    isPropertyOrFunction = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
+                    isVariableOrNamedFunction = symbol is FirVariableSymbol || symbol is FirNamedFunctionSymbol
                 )
             }
 
@@ -182,7 +182,7 @@ abstract class FirVisibilityChecker : FirSessionComponent {
         dispatchReceiver: ReceiverValue?,
         ownerLookupTag: ConeClassLikeLookupTag,
         session: FirSession,
-        isPropertyOrFunction: Boolean
+        isVariableOrNamedFunction: Boolean
     ): Boolean {
         dispatchReceiver?.ownerIfCompanion(session)?.let { companionOwnerLookupTag ->
             if (containingUseSiteClass.isSubClass(companionOwnerLookupTag, session)) return true
@@ -190,7 +190,7 @@ abstract class FirVisibilityChecker : FirSessionComponent {
 
         return when {
             !containingUseSiteClass.isSubClass(ownerLookupTag, session) -> false
-            isPropertyOrFunction -> doesReceiverFitForProtectedVisibility(dispatchReceiver, containingUseSiteClass, session)
+            isVariableOrNamedFunction -> doesReceiverFitForProtectedVisibility(dispatchReceiver, containingUseSiteClass, session)
             else -> true
         }
     }
@@ -244,14 +244,14 @@ abstract class FirVisibilityChecker : FirSessionComponent {
         dispatchReceiver: ReceiverValue?,
         ownerLookupTag: ConeClassLikeLookupTag,
         session: FirSession,
-        isPropertyOrFunction: Boolean
+        isVariableOrNamedFunction: Boolean
     ): Boolean {
         if (canSeePrivateMemberOf(containingDeclarationOfUseSite, ownerLookupTag, session)) return true
 
         for (containingDeclaration in containingDeclarationOfUseSite) {
             if (containingDeclaration !is FirClass) continue
             val boundSymbol = containingDeclaration.symbol
-            if (canSeeProtectedMemberOf(boundSymbol.fir, dispatchReceiver, ownerLookupTag, session, isPropertyOrFunction)) return true
+            if (canSeeProtectedMemberOf(boundSymbol.fir, dispatchReceiver, ownerLookupTag, session, isVariableOrNamedFunction)) return true
         }
 
         return false
