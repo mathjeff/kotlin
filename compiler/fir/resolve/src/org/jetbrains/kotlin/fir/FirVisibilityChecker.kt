@@ -116,7 +116,7 @@ abstract class FirVisibilityChecker : FirSessionComponent {
                 val ownerId = symbol.getOwnerId()
                 ownerId != null && canSeeProtectedMemberOf(
                     containingDeclarations, dispatchReceiver, ownerId, session,
-                    isNonConstructorCallable = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
+                    isPropertyOrFunction = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
                 )
             }
 
@@ -176,14 +176,17 @@ abstract class FirVisibilityChecker : FirSessionComponent {
         dispatchReceiver: ReceiverValue?,
         ownerId: ClassId,
         session: FirSession,
-        isNonConstructorCallable: Boolean
+        isPropertyOrFunction: Boolean
     ): Boolean {
         dispatchReceiver?.ownerIfCompanion(session)?.let { companionOwnerClassId ->
             if (containingUseSiteClass.isSubClass(companionOwnerClassId, session)) return true
         }
 
-        return containingUseSiteClass.isSubClass(ownerId, session) &&
-                (!isNonConstructorCallable || doesReceiverFitForProtectedVisibility(dispatchReceiver, containingUseSiteClass, session))
+        return when {
+            !containingUseSiteClass.isSubClass(ownerId, session) -> false
+            isPropertyOrFunction -> doesReceiverFitForProtectedVisibility(dispatchReceiver, containingUseSiteClass, session)
+            else -> true
+        }
     }
 
     private fun doesReceiverFitForProtectedVisibility(
@@ -250,14 +253,14 @@ abstract class FirVisibilityChecker : FirSessionComponent {
         dispatchReceiver: ReceiverValue?,
         ownerId: ClassId,
         session: FirSession,
-        isNonConstructorCallable: Boolean
+        isPropertyOrFunction: Boolean
     ): Boolean {
         if (canSeePrivateMemberOf(containingDeclarationOfUseSite, ownerId, session)) return true
 
         for (containingDeclaration in containingDeclarationOfUseSite) {
             if (containingDeclaration !is FirClass) continue
             val boundSymbol = containingDeclaration.symbol
-            if (canSeeProtectedMemberOf(boundSymbol.fir, dispatchReceiver, ownerId, session, isNonConstructorCallable)) return true
+            if (canSeeProtectedMemberOf(boundSymbol.fir, dispatchReceiver, ownerId, session, isPropertyOrFunction)) return true
         }
 
         return false

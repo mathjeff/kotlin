@@ -33,7 +33,7 @@ object FirJavaVisibilityChecker : FirVisibilityChecker() {
                     val ownerId = symbol.getOwnerId()
                     ownerId != null && canSeeProtectedMemberOf(
                         containingDeclarations, dispatchReceiver, ownerId, session,
-                        isNonConstructorCallable = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
+                        isPropertyOrFunction = symbol is FirCallableSymbol && symbol !is FirConstructorSymbol
                     )
                 }
             }
