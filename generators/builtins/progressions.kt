@@ -163,17 +163,11 @@ public open class $progression
     override val size: Int
         get() = $sizeBody
 
-    private infix fun $t.mod(n: $incrementType): $incrementType {
-        val positiveN = kotlin.math.abs(n)
-        val r = ${if (kind == CHAR) "(this - Char.MIN_VALUE)" else "this"} % positiveN
-        return if (r < $zero) r + positiveN else r
-    }
-
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $t): Boolean = when {
         @Suppress("USELESS_CAST") (value as Any? !is $t) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
-        step > $zero && value >= first && value <= last -> value mod step == first mod step
-        step < $zero && value <= first && value >= last -> value mod step == first mod step
+        step > $zero && value >= first && value <= last ||
+        step < $zero && value <= first && value >= last -> value$elementToIncrement.mod(step) == first$elementToIncrement.mod(step)
         else -> false
     }
 

@@ -62,17 +62,11 @@ public open class CharProgression
     override val size: Int
         get() = if (isEmpty()) 0 else (last - first) / step + 1
 
-    private infix fun Char.mod(n: Int): Int {
-        val positiveN = kotlin.math.abs(n)
-        val r = (this - Char.MIN_VALUE) % positiveN
-        return if (r < 0) r + positiveN else r
-    }
-
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Char): Boolean = when {
         @Suppress("USELESS_CAST") (value as Any? !is Char) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
-        step > 0 && value >= first && value <= last -> value mod step == first mod step
-        step < 0 && value <= first && value >= last -> value mod step == first mod step
+        step > 0 && value >= first && value <= last ||
+        step < 0 && value <= first && value >= last -> value.code.mod(step) == first.code.mod(step)
         else -> false
     }
 
@@ -185,17 +179,11 @@ public open class IntProgression
             }
         }
 
-    private infix fun Int.mod(n: Int): Int {
-        val positiveN = kotlin.math.abs(n)
-        val r = this % positiveN
-        return if (r < 0) r + positiveN else r
-    }
-
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Int): Boolean = when {
         @Suppress("USELESS_CAST") (value as Any? !is Int) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
-        step > 0 && value >= first && value <= last -> value mod step == first mod step
-        step < 0 && value <= first && value >= last -> value mod step == first mod step
+        step > 0 && value >= first && value <= last ||
+        step < 0 && value <= first && value >= last -> value.mod(step) == first.mod(step)
         else -> false
     }
 
@@ -308,17 +296,11 @@ public open class LongProgression
             }
         }
 
-    private infix fun Long.mod(n: Long): Long {
-        val positiveN = kotlin.math.abs(n)
-        val r = this % positiveN
-        return if (r < 0L) r + positiveN else r
-    }
-
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Long): Boolean = when {
         @Suppress("USELESS_CAST") (value as Any? !is Long) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
-        step > 0L && value >= first && value <= last -> value mod step == first mod step
-        step < 0L && value <= first && value >= last -> value mod step == first mod step
+        step > 0L && value >= first && value <= last ||
+        step < 0L && value <= first && value >= last -> value.mod(step) == first.mod(step)
         else -> false
     }
 
