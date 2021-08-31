@@ -73,18 +73,36 @@ class Arifm() {
     operator fun invoke(i: Int) {}
 }
 
+class Contains() {
+    operator fun invoke(i: Int): Boolean = true
+}
+
+class Getter() {
+    operator fun invoke(i: Int): Int = 1
+}
+
+class Setter() {
+    operator fun invoke(i: Int, j: Int) {}
+}
+
 class B() {
     val plus = Arifm()
     val minus = Arifm()
     val compareTo = Comp()
+    val contains = Contains()
+    val get = Getter()
+    val set = Setter()
 }
 
 fun case3() {
     var b = B()
-    b + 5
-    b - 5
-    b < 5
-    b >= 5
+    b <!PROPERTY_AS_OPERATOR!>+<!> 5
+    b <!PROPERTY_AS_OPERATOR!>-<!> 5
+    b <!PROPERTY_AS_OPERATOR!><<!> 5
+    b <!PROPERTY_AS_OPERATOR!>>=<!> 5
+    1 <!PROPERTY_AS_OPERATOR!>in<!> b
+    <!PROPERTY_AS_OPERATOR!>b[2]<!>
+    <!PROPERTY_AS_OPERATOR!>b[3]<!> = 4
 }
 // FILE: TestCase4.kt
 /*
@@ -102,8 +120,8 @@ class B(val minusAssign: Assign = Assign()) {
 
 fun case3() {
     var b = B()
-    b  +=  2
-    b  -=  3
+    b  <!PROPERTY_AS_OPERATOR!>+=<!>  2
+    b  <!PROPERTY_AS_OPERATOR!>-=<!>  3
 }
 
 // FILE: TestCase5.kt
@@ -142,7 +160,7 @@ class B(var a: Int = 0) {
         val plus :E =TODO()
 
         fun foo(b: B){
-            this + 1
+            this <!PROPERTY_AS_OPERATOR!>+<!> 1
         }
 
         operator fun invoke(value: Int) = B()
