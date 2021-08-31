@@ -71,7 +71,7 @@ THREAD_LOCAL_VARIABLE bool disallowSourceInfo = false;
 
 #if !KONAN_NO_BACKTRACE
 int getSourceInfo(void* symbol, SourceInfo *result, int result_len) {
-    return disallowSourceInfo ? 0 : Kotlin_getSourceInfo(symbol, result, result_len);
+    return disallowSourceInfo ? 0 : compiler::getSourceInfo(symbol, result, result_len);
 }
 #endif
 
