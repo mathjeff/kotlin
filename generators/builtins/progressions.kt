@@ -78,10 +78,10 @@ class GenerateProgressions(out: PrintWriter) : BuiltInsSourceGenerator(out) {
                     (first - last)$incToInt
                 else Int.MAX_VALUE
             step > $incrementType.MIN_VALUE / $two && step < $incrementType.MAX_VALUE / $two -> {
-                //(last - first) / step = 
+                //(last - first) / step =
                 // = (last / step * step + last % step - first / step * step - first % step) / step =
                 // = last / step - first / step + (last % step - first % step) / step
-            
+
                 //no overflow because |step| >= 2
                 //$incrementType.MIN_VALUE / 2 <= last / step <= $incrementType.MAX_VALUE / 2
                 //$incrementType.MIN_VALUE / 2 <= first / step <= $incrementType.MAX_VALUE / 2
@@ -163,7 +163,7 @@ public open class $progression
         get() = $sizeBody
 
     private infix fun $t.mod(n: $incrementType): $incrementType {
-        val positiveN = kotlin.math.abs(n) 
+        val positiveN = kotlin.math.abs(n)
         val r = ${if (kind == CHAR) "(this - Char.MIN_VALUE)" else "this"} % positiveN
         return if (r < $zero) r + positiveN else r
     }
@@ -173,7 +173,7 @@ public open class $progression
         step < $zero && value <= first && value >= last -> value mod step == first mod step
         else -> false
     }
-    
+
     override fun containsAll(elements: Collection<$t>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
     companion object {

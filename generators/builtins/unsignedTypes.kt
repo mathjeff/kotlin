@@ -598,9 +598,9 @@ public class ${elementType}Range(start: $elementType, endInclusive: $elementType
 
     override fun contains(value: $elementType): Boolean = first <= value && value <= last
 
-    /** 
+    /**
      * Checks if the range is empty.
-     
+
      * The range is empty if its start value is greater than the end value.
      */
     override fun isEmpty(): Boolean = first > last
@@ -653,9 +653,9 @@ internal constructor(
 
     final override fun iterator(): Iterator<$elementType> = ${elementType}ProgressionIterator(first, last, step)
 
-    /** 
+    /**
      * Checks if the progression is empty.
-     
+
      * Progression with a positive step is empty if its first element is greater than the last element.
      * Progression with a negative step is empty if its first element is less than the last element.
      */
@@ -669,17 +669,17 @@ internal constructor(
         if (isEmpty()) -1 else (31 * (31 * ${hashCodeConversion("first")}.toInt() + ${hashCodeConversion("last")}.toInt()) + ${hashCodeConversion("step", isSigned = true)}.toInt())
 
     override fun toString(): String = if (step > 0) "${'$'}first..${'$'}last step ${'$'}step" else "${'$'}first downTo ${'$'}last step ${'$'}{-step}"
-    
+
     override val size: Int
         get() = $sizeBody
 
-    override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $elementType): Boolean = 
+    override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $elementType): Boolean =
         when {
             step > 0 && value >= first && value <= last -> (value - first) % step.to$elementType() == $zero
             step < 0 && value <= first && value >= last -> (first - value) % (-step).to$elementType() == $zero
             else -> false
         }
-    
+
     override fun containsAll(elements: Collection<$elementType>): Boolean =
         if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
