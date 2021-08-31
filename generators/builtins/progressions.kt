@@ -178,7 +178,8 @@ public open class $progression
     }
 
     @SinceKotlin("1.6")
-    override fun containsAll(elements: Collection<$t>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
+    override fun containsAll(elements: Collection<$t>): Boolean =
+        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in (this as Collection<Any?>) }
 
     companion object {
         /**

@@ -77,7 +77,8 @@ public open class CharProgression
     }
 
     @SinceKotlin("1.6")
-    override fun containsAll(elements: Collection<Char>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
+    override fun containsAll(elements: Collection<Char>): Boolean =
+        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in (this as Collection<Any?>) }
 
     companion object {
         /**
@@ -199,7 +200,8 @@ public open class IntProgression
     }
 
     @SinceKotlin("1.6")
-    override fun containsAll(elements: Collection<Int>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
+    override fun containsAll(elements: Collection<Int>): Boolean =
+        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in (this as Collection<Any?>) }
 
     companion object {
         /**
@@ -321,7 +323,8 @@ public open class LongProgression
     }
 
     @SinceKotlin("1.6")
-    override fun containsAll(elements: Collection<Long>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
+    override fun containsAll(elements: Collection<Long>): Boolean =
+        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in (this as Collection<Any?>) }
 
     companion object {
         /**

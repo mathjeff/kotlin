@@ -115,7 +115,7 @@ internal constructor(
 
     @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<UInt>): Boolean =
-        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
+        if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in (this as Collection<Any?>) }
 
 
     companion object {
