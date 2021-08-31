@@ -107,6 +107,7 @@ internal constructor(
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: UInt): Boolean =
         when {
+            @Suppress("USELESS_CAST") (value as Any? !is UInt) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
             step > 0 && value >= first && value <= last -> (value - first) % step.toUInt() == 0U
             step < 0 && value <= first && value >= last -> (first - value) % (-step).toUInt() == 0U
             else -> false

@@ -70,6 +70,7 @@ public open class CharProgression
 
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Char): Boolean = when {
+        @Suppress("USELESS_CAST") (value as Any? !is Char) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
         step > 0 && value >= first && value <= last -> value mod step == first mod step
         step < 0 && value <= first && value >= last -> value mod step == first mod step
         else -> false
@@ -191,6 +192,7 @@ public open class IntProgression
 
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Int): Boolean = when {
+        @Suppress("USELESS_CAST") (value as Any? !is Int) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
         step > 0 && value >= first && value <= last -> value mod step == first mod step
         step < 0 && value <= first && value >= last -> value mod step == first mod step
         else -> false
@@ -312,6 +314,7 @@ public open class LongProgression
 
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Long): Boolean = when {
+        @Suppress("USELESS_CAST") (value as Any? !is Long) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
         step > 0L && value >= first && value <= last -> value mod step == first mod step
         step < 0L && value <= first && value >= last -> value mod step == first mod step
         else -> false

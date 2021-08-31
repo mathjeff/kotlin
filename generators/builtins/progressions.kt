@@ -171,6 +171,7 @@ public open class $progression
 
     @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $t): Boolean = when {
+        @Suppress("USELESS_CAST") (value as Any? !is $t) -> false // TODO: Eliminate this check after KT-30016 gets fixed.
         step > $zero && value >= first && value <= last -> value mod step == first mod step
         step < $zero && value <= first && value >= last -> value mod step == first mod step
         else -> false
