@@ -97,7 +97,6 @@ class KonanConfig(val project: Project, val configuration: CompilerConfiguration
     val sourceInfoType: SourceInfoType
         get() = configuration.get(BinaryOptions.sourceInfoType)
                 ?: SourceInfoType.CORESYMBOLICATION.takeIf { debug && target.family.isAppleFamily }
-                ?: SourceInfoType.LIBBACKTRACE.takeIf { debug && target.supportsLibBacktrace() }
                 ?: SourceInfoType.NOOP
 
 
