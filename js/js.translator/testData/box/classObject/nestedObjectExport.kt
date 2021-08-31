@@ -1,18 +1,16 @@
 // SKIP_DCE_DRIVEN
+// RUN_PLAIN_BOX_FUNCTION
+// INFER_MAIN_MODULE
+
 // See KT-43783
 
-var log = ""
+// MODULE: nestedObjectExport
+// FILE: lib.kt
 
 @JsExport
 class Abc {
-    init {
-        log += "Constructor OK\n"
-    }
-
     companion object AbcCompanion {
-        fun xyz() {
-            log += "Companion object function OK\n"
-        }
+        fun xyz(): String = "Companion object method OK"
 
         val prop: String
             get() = "Companion object property OK"
@@ -26,22 +24,17 @@ sealed class MyEnum(val name: String) {
     object C: MyEnum("C")
 }
 
-fun getPackage() = js("return JS_TESTS")
+// FILE: test.js
 
-fun box(): String {
-    assertEquals("", log)
-    js("new JS_TESTS.Abc()")
-    assertEquals("Constructor OK\n", log)
+function box() {
+    const companionObject = nestedObjectExport.Abc.AbcCompanion;
 
-    val d = getPackage()
+    if (companionObject.xyz() != 'Companion object method OK') return 'companion object function failure';
+    if (companionObject.prop != 'Companion object property OK') return 'companion object property failure';
 
-    val companionObject = d.Abc.AbcCompanion
-    companionObject.xyz()
-    assertEquals("Constructor OK\nCompanion object function OK\n", log)
-    assertEquals("Companion object property OK", companionObject.prop)
+    if (nestedObjectExport.MyEnum.A.name != 'A') return 'MyEnum.A failure';
+    if (nestedObjectExport.MyEnum.B.name != 'B') return 'MyEnum.B failure';
+    if (nestedObjectExport.MyEnum.C.name != 'C') return 'MyEnum.C failure';
 
-    assertEquals(d.MyEnum.A.name, "A")
-    assertEquals(d.MyEnum.B.name, "B")
-    assertEquals(d.MyEnum.C.name, "C")
-    return "OK"
+    return 'OK';
 }
