@@ -94,6 +94,7 @@ internal constructor(
 
     override fun toString(): String = if (step > 0) "$first..$last step $step" else "$first downTo $last step ${-step}"
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = when {
             isEmpty() -> 0
@@ -103,6 +104,7 @@ internal constructor(
             else -> error("Invariant is broken: step cannot be 0")
         }
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: UInt): Boolean =
         when {
             step > 0 && value >= first && value <= last -> (value - first) % step.toUInt() == 0U
@@ -110,6 +112,7 @@ internal constructor(
             else -> false
         }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<UInt>): Boolean =
         if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 

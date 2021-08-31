@@ -159,6 +159,7 @@ public open class $progression
 
     override fun toString(): String = ${"if (step > 0) \"\$first..\$last step \$step\" else \"\$first downTo \$last step \${-step}\""}
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = $sizeBody
 
@@ -168,12 +169,14 @@ public open class $progression
         return if (r < $zero) r + positiveN else r
     }
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $t): Boolean = when {
         step > $zero && value >= first && value <= last -> value mod step == first mod step
         step < $zero && value <= first && value >= last -> value mod step == first mod step
         else -> false
     }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<$t>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
     companion object {

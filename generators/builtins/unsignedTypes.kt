@@ -670,9 +670,11 @@ internal constructor(
 
     override fun toString(): String = if (step > 0) "${'$'}first..${'$'}last step ${'$'}step" else "${'$'}first downTo ${'$'}last step ${'$'}{-step}"
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = $sizeBody
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: $elementType): Boolean =
         when {
             step > 0 && value >= first && value <= last -> (value - first) % step.to$elementType() == $zero
@@ -680,6 +682,7 @@ internal constructor(
             else -> false
         }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<$elementType>): Boolean =
         if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 

@@ -58,6 +58,7 @@ public open class CharProgression
 
     override fun toString(): String = if (step > 0) "$first..$last step $step" else "$first downTo $last step ${-step}"
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = if (isEmpty()) 0 else (last - first) / step + 1
 
@@ -67,12 +68,14 @@ public open class CharProgression
         return if (r < 0) r + positiveN else r
     }
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Char): Boolean = when {
         step > 0 && value >= first && value <= last -> value mod step == first mod step
         step < 0 && value <= first && value >= last -> value mod step == first mod step
         else -> false
     }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<Char>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
     companion object {
@@ -137,6 +140,7 @@ public open class IntProgression
 
     override fun toString(): String = if (step > 0) "$first..$last step $step" else "$first downTo $last step ${-step}"
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = if (isEmpty()) 0 else when {
             step == 1 ->
@@ -185,12 +189,14 @@ public open class IntProgression
         return if (r < 0) r + positiveN else r
     }
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Int): Boolean = when {
         step > 0 && value >= first && value <= last -> value mod step == first mod step
         step < 0 && value <= first && value >= last -> value mod step == first mod step
         else -> false
     }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<Int>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
     companion object {
@@ -255,6 +261,7 @@ public open class LongProgression
 
     override fun toString(): String = if (step > 0) "$first..$last step $step" else "$first downTo $last step ${-step}"
 
+    @SinceKotlin("1.6")
     override val size: Int
         get() = if (isEmpty()) 0 else when {
             step == 1L ->
@@ -303,12 +310,14 @@ public open class LongProgression
         return if (r < 0L) r + positiveN else r
     }
 
+    @SinceKotlin("1.6")
     override fun contains(@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE") /* for the backward compatibility with old names */ value: Long): Boolean = when {
         step > 0L && value >= first && value <= last -> value mod step == first mod step
         step < 0L && value <= first && value >= last -> value mod step == first mod step
         else -> false
     }
 
+    @SinceKotlin("1.6")
     override fun containsAll(elements: Collection<Long>): Boolean = if (this.isEmpty()) elements.isEmpty() else (elements as Collection<*>).all { it in this }
 
     companion object {
