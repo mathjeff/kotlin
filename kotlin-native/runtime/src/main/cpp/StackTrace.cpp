@@ -124,10 +124,11 @@ KStdVector<KStdString> kotlin::GetStackTraceStrings(void* const* stackTrace, siz
         RuntimeCheck(symbols != nullptr, "Not enough memory to retrieve the stacktrace");
 #endif
 
+        SourceInfo buffer[10]; // outside of the loop to avoid calling constructors and destructors each time
         for (size_t index = 0; index < stackTraceSize; ++index) {
             KNativePtr address = stackTrace[index];
-            SourceInfo buffer[10];
-            int frames = getSourceInfo(address, buffer, std::size(buffer));
+            int frames_or_overflow = getSourceInfo(address, buffer, std::size(buffer));
+            int frames = std::min<int>(frames_or_overflow, std::size(buffer));
 #if USE_GCC_UNWIND
             char symbol_[512];
             if (!AddressToSymbol(address, symbol_, sizeof(symbol_))) {
@@ -149,7 +150,12 @@ KStdVector<KStdString> kotlin::GetStackTraceStrings(void* const* stackTrace, siz
             for (int frame = 0; frame < frames; frame++) {
                 auto &sourceInfo = buffer[frame];
                 if (!sourceInfo.getFileName().empty()) {
-                    const char* inline_tag = (frame == frames - 1) ? "" : "[inlined] ";
+                    bool is_last = frame == frames - 1;
+                    if (is_last && frames_or_overflow != frames) {
+                        konan::snprintf(line, sizeof(line) - 1, "%-4zd %s (some inlined frames skipped)", strings.size(), symbol);
+                        strings.push_back(line);
+                    }
+                    const char* inline_tag = is_last ? "" : "[inlined] ";
                     if (sourceInfo.lineNumber != -1) {
                         if (sourceInfo.column != -1) {
                             konan::snprintf(
