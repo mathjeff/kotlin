@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.*
 import org.jetbrains.kotlin.testing.native.*
 import org.jetbrains.kotlin.bitcode.CompileToBitcode
 import org.jetbrains.kotlin.konan.target.*
+import org.jetbrains.kotlin.konan.target.Architecture as TargetArchitecture
 
 plugins {
     id("compile-to-bitcode")
@@ -89,11 +90,12 @@ bitcode {
                 "state.c"
         )
         srcDirs = files("$srcRoot/c")
+        val elfSize = targetInfo.architecture.let { if (it == TargetArchitecture.X64 || it == TargetArchitecture.ARM64) 64 else 32 }
         compilerArgs.addAll(listOfNotNull(
                 "-funwind-tables",
                 "-W", "-Wall", "-Wwrite-strings", "-Wstrict-prototypes", "-Wmissing-prototypes",
                 "-Wold-style-definition", "-Wmissing-format-attribute", "-Wcast-qual", "-O2",
-                "-DBACKTRACE_ELF_SIZE=${targetInfo.architecture.bitness}".takeIf { useElf }
+                "-DBACKTRACE_ELF_SIZE=$elfSize".takeIf { useElf }
         ))
         headersDirs = files("$srcRoot/c/include")
 
