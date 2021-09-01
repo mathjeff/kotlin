@@ -25,7 +25,7 @@ public class IncrementalCompilation {
     public static final String INCREMENTAL_COMPILATION_JS_PROPERTY = "kotlin.incremental.compilation.js";
 
     public static boolean isEnabledForJvm() {
-        return "true".equals(System.getProperty(INCREMENTAL_COMPILATION_JVM_PROPERTY));
+        return true;
     }
 
     public static boolean isEnabledForJs() {
