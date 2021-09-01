@@ -228,9 +228,13 @@ public actual inline fun String.substring(startIndex: Int): String = asDynamic()
 @kotlin.internal.InlineOnly
 public actual inline fun String.substring(startIndex: Int, endIndex: Int): String = asDynamic().substring(startIndex, endIndex)
 
+@Deprecated("Please use String.plus() instead", ReplaceWith("this + str"))
+@DeprecatedSinceKotlin(warningSince = "1.6")
 @kotlin.internal.InlineOnly
 public inline fun String.concat(str: String): String = asDynamic().concat(str)
 
+@Deprecated("Please use Regex.findAll() instead")
+@DeprecatedSinceKotlin(warningSince = "1.6")
 @kotlin.internal.InlineOnly
 public inline fun String.match(regex: String): Array<String>? = asDynamic().match(regex)
 
