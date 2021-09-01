@@ -71,10 +71,10 @@ class GenerateProgressions(out: PrintWriter) : BuiltInsSourceGenerator(out) {
                     else -> """
         when {
             isEmpty() -> 0
-            step == $one -> unsignedIncrementAndClamp((last - first).toU$incrementType())
-            step == -$one -> unsignedIncrementAndClamp((first - last).toU$incrementType())
-            step > 0 -> unsignedIncrementAndClamp((last - first).toU$incrementType() / step.toU$incrementType())
-            step < 0 -> unsignedIncrementAndClamp((first - last).toU$incrementType() / (-step).toU$incrementType())
+            step == $one -> unsignedIncrementAndClamp(last - first)
+            step == -$one -> unsignedIncrementAndClamp(first - last)
+            step > 0 -> unsignedIncrementAndClamp(last - first, step)
+            step < 0 -> unsignedIncrementAndClamp(first - last, -step)
             else -> error("Progression invariant is broken: step == 0")
         }""".trim()
                 }

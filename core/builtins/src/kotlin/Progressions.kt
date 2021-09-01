@@ -142,10 +142,10 @@ public open class IntProgression
     override val size: Int
         get() = when {
             isEmpty() -> 0
-            step == 1 -> unsignedIncrementAndClamp((last - first).toUInt())
-            step == -1 -> unsignedIncrementAndClamp((first - last).toUInt())
-            step > 0 -> unsignedIncrementAndClamp((last - first).toUInt() / step.toUInt())
-            step < 0 -> unsignedIncrementAndClamp((first - last).toUInt() / (-step).toUInt())
+            step == 1 -> unsignedIncrementAndClamp(last - first)
+            step == -1 -> unsignedIncrementAndClamp(first - last)
+            step > 0 -> unsignedIncrementAndClamp(last - first, step)
+            step < 0 -> unsignedIncrementAndClamp(first - last, -step)
             else -> error("Progression invariant is broken: step == 0")
         }
 
@@ -227,10 +227,10 @@ public open class LongProgression
     override val size: Int
         get() = when {
             isEmpty() -> 0
-            step == 1L -> unsignedIncrementAndClamp((last - first).toULong())
-            step == -1L -> unsignedIncrementAndClamp((first - last).toULong())
-            step > 0 -> unsignedIncrementAndClamp((last - first).toULong() / step.toULong())
-            step < 0 -> unsignedIncrementAndClamp((first - last).toULong() / (-step).toULong())
+            step == 1L -> unsignedIncrementAndClamp(last - first)
+            step == -1L -> unsignedIncrementAndClamp(first - last)
+            step > 0 -> unsignedIncrementAndClamp(last - first, step)
+            step < 0 -> unsignedIncrementAndClamp(first - last, -step)
             else -> error("Progression invariant is broken: step == 0")
         }
 
