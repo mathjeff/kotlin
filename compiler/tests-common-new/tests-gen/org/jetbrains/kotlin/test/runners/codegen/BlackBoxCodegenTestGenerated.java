@@ -40989,6 +40989,12 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
         }
 
         @Test
+        @TestMetadata("kt47917.kt")
+        public void testKt47917() throws Exception {
+            runTest("compiler/testData/codegen/box/strings/kt47917.kt");
+        }
+
+        @Test
         @TestMetadata("kt5389_stringBuilderGet.kt")
         public void testKt5389_stringBuilderGet() throws Exception {
             runTest("compiler/testData/codegen/box/strings/kt5389_stringBuilderGet.kt");
@@ -41076,6 +41082,12 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
         @TestMetadata("stringPlusOverride.kt")
         public void testStringPlusOverride() throws Exception {
             runTest("compiler/testData/codegen/box/strings/stringPlusOverride.kt");
+        }
+
+        @Test
+        @TestMetadata("surrogatePair.kt")
+        public void testSurrogatePair() throws Exception {
+            runTest("compiler/testData/codegen/box/strings/surrogatePair.kt");
         }
     }
 
