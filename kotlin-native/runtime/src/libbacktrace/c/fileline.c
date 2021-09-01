@@ -228,6 +228,7 @@ fileline_initialize (struct backtrace_state *state,
 	  abort ();
 	}
 
+      fprintf(stderr, "Try filename = %s\n", filename);
       if (filename == NULL)
 	continue;
 

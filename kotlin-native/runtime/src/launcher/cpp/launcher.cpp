@@ -52,6 +52,10 @@ extern "C" RUNTIME_USED int Init_and_run_start(int argc, const char** argv, int 
   _Konan_constructors();
 #endif
 
+  for (int i = 0; i < argc; i++) {
+      fprintf(stderr, "argv[%d] = %s\n", i, argv[i]);
+  }
+
   Kotlin_initRuntimeIfNeeded();
   Kotlin_mm_switchThreadStateRunnable();
 

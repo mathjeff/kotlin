@@ -35,6 +35,8 @@ POSSIBILITY OF SUCH DAMAGE.  */
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <windows.h>
+#include <psapi.h>
 
 #include "backtrace.h"
 #include "internal.h"
@@ -441,6 +443,7 @@ coff_initialize_syminfo (struct backtrace_state *state,
 	  coff_sym->address = (coff_read4 (asym->value)
 			       + sects[secnum - 1].virtual_address
 			       + base_address);
+	  fprintf(stderr, "Got symbol, name = %s, address = %llx, base = %llx, section = %x\n", coff_sym->name, coff_sym->address, base_address, sects[secnum - 1].virtual_address);
 	  coff_sym++;
 	}
 
@@ -577,6 +580,15 @@ coff_syminfo (struct backtrace_state *state, uintptr_t addr,
 /* Add the backtrace data for one PE/COFF file.  Returns 1 on success,
    0 on failure (in both cases descriptor is closed).  */
 
+static uintptr_t getModuleBase(void ) {
+    MODULEINFO module_info;
+    memset(&module_info, 0, sizeof(module_info));
+    if (GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &module_info, sizeof(module_info))) {
+        return (uintptr_t)module_info.lpBaseOfDll;
+    }
+    return 0;
+}
+
 static int
 coff_add (struct backtrace_state *state, int descriptor,
 	  backtrace_error_callback error_callback, void *data,
@@ -610,6 +622,7 @@ coff_add (struct backtrace_state *state, int descriptor,
   int debug_view_valid;
   int is_64;
   uintptr_t image_base;
+  uintptr_t dwarf_base;
   struct dwarf_sections dwarf_sections;
 
   *found_sym = 0;
@@ -702,6 +715,9 @@ coff_add (struct backtrace_state *state, int descriptor,
     }
   else
     image_base = 0;
+  dwarf_base = -image_base;
+  image_base = getModuleBase();
+  dwarf_base += image_base;
 
   /* Read the symbol table and the string table.  */
 
@@ -856,7 +872,7 @@ coff_add (struct backtrace_state *state, int descriptor,
 				  + (sections[i].offset - min_offset));
     }
 
-  if (!backtrace_dwarf_add (state, /* base_address */ 0, &dwarf_sections,
+  if (!backtrace_dwarf_add (state, /* base_address */ dwarf_base, &dwarf_sections,
 			    0, /* FIXME: is_bigendian */
 			    NULL, /* altlink */
 			    error_callback, data, fileline_fn,

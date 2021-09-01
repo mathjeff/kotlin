@@ -2620,6 +2620,7 @@ add_line (struct backtrace_state *state, struct dwarf_data *ddata,
 	  backtrace_error_callback error_callback, void *data,
 	  struct line_vector *vec)
 {
+    fprintf(stderr, "Found mapping %llx -> (%s:%d:%d)\n", (unsigned long long)pc, filename, lineno, column);
   struct line *ln;
 
   /* If we are adding the same mapping, ignore it.  This can happen
@@ -3064,6 +3065,8 @@ read_line_program (struct backtrace_state *state, struct dwarf_data *ddata,
   int lineno;
   int column;
 
+  fprintf(stderr, "In read_line_program\n");
+
   address = 0;
   op_index = 0;
   if (hdr->filenames_count > 1)
@@ -3292,8 +3295,10 @@ read_line_info (struct backtrace_state *state, struct dwarf_data *ddata,
   len = read_initial_length (&line_buf, &is_dwarf64);
   line_buf.left = len;
 
-  if (!read_line_header (state, ddata, u, is_dwarf64, &line_buf, hdr))
+  if (!read_line_header (state, ddata, u, is_dwarf64, &line_buf, hdr)) {
+    fprintf(stderr, "read_line_header failed\n");
     goto fail;
+  }
 
   if (!read_line_program (state, ddata, hdr, &line_buf, &vec))
     goto fail;
@@ -3978,6 +3983,7 @@ dwarf_lookup_pc (struct backtrace_state *state, struct dwarf_data *ddata,
 		 backtrace_error_callback error_callback, void *data,
 		 int *found)
 {
+  fprintf(stderr, "In dwarf_lookup_pc start\n");
   struct unit_addrs *entry;
   int found_entry;
   struct unit *u;
@@ -4004,6 +4010,10 @@ dwarf_lookup_pc (struct backtrace_state *state, struct dwarf_data *ddata,
 
   if (entry == NULL)
     {
+      fprintf(stderr, "entry is null!!! pc = %llx\n", (unsigned long long)pc);
+      for (int i = 0; i < (int)ddata->addrs_count; i++) {
+          fprintf(stderr, "I had range [%llx..%llx]\n", ddata->addrs[i].low, ddata->addrs[i].high);
+      }
       *found = 0;
       return 0;
     }
@@ -4031,6 +4041,10 @@ dwarf_lookup_pc (struct backtrace_state *state, struct dwarf_data *ddata,
     }
   if (!found_entry)
     {
+      fprintf(stderr, "In dwarf_lookup_pc: entry not found\n");
+      for (int i = 0; i < (int)ddata->addrs_count; i++) {
+          fprintf(stderr, "I had range [%llx..%llx]\n", ddata->addrs[i].low, ddata->addrs[i].high);
+      }
       *found = 0;
       return 0;
     }
@@ -4067,6 +4081,7 @@ dwarf_lookup_pc (struct backtrace_state *state, struct dwarf_data *ddata,
     lines = backtrace_atomic_load_pointer (&u->lines);
 
   new_data = 0;
+  fprintf(stderr, "In dwarf_lookup_pc: lines = %p\n", lines);
   if (lines == NULL)
     {
       struct function_addrs *function_addrs;
@@ -4241,6 +4256,7 @@ dwarf_fileline (struct backtrace_state *state, uintptr_t pc,
 		backtrace_full_callback callback,
 		backtrace_error_callback error_callback, void *data)
 {
+    fprintf(stderr, "In dwarf_fileline: pc = %llx\n", (unsigned long long)pc);
   struct dwarf_data *ddata;
   int found;
   int ret;
@@ -4315,6 +4331,7 @@ build_dwarf_data (struct backtrace_state *state,
   units = (struct unit **) units_vec.vec.base;
   addrs_count = addrs_vec.count;
   units_count = units_vec.count;
+  fprintf(stderr, "Found %d addreses\n", (int)addrs_count);
   backtrace_qsort (addrs, addrs_count, sizeof (struct unit_addrs),
 		   unit_addrs_compare);
   /* No qsort for units required, already sorted.  */
