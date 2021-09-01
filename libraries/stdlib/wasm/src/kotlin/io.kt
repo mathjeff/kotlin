@@ -23,8 +23,10 @@ public actual fun print(message: Any?) {
     println(message)
 }
 
+@SinceKotlin("1.6")
 public actual fun readln(): String = TODO("Wasm stdlib: IO")
 
+@SinceKotlin("1.6")
 public actual fun readlnOrNull(): String? = TODO("Wasm stdlib: IO")
 
 

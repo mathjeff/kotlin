@@ -21,6 +21,7 @@ public expect fun print(message: Any?)
  *
  * LF or CRLF is treated as the line terminator. Line terminator is not included in the returned string.
  */
+@SinceKotlin("1.6")
 public expect fun readln(): String
 
 /**
@@ -29,6 +30,7 @@ public expect fun readln(): String
  *
  * LF or CRLF is treated as the line terminator. Line terminator is not included in the returned string.
  */
+@SinceKotlin("1.6")
 public expect fun readlnOrNull(): String?
 
 internal class ReadAfterEOFException(message: String?) : RuntimeException(message)

@@ -37,6 +37,7 @@ public actual external fun println()
  *
  * The input is interpreted as UTF-8. Invalid bytes are replaced by the replacement character '\uFFFD'.
  */
+@SinceKotlin("1.6")
 public actual fun readln(): String = readlnOrNull() ?: throw ReadAfterEOFException("EOF has already been reached")
 
 /**
@@ -47,6 +48,7 @@ public actual fun readln(): String = readlnOrNull() ?: throw ReadAfterEOFExcepti
  *
  * The input is interpreted as UTF-8. Invalid bytes are replaced by the replacement character '\uFFFD'.
  */
+@SinceKotlin("1.6")
 @GCUnsafeCall("Kotlin_io_Console_readlnOrNull")
 public actual external fun readlnOrNull(): String?
 

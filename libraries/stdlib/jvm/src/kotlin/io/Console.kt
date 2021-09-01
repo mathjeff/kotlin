@@ -148,6 +148,7 @@ public actual inline fun println() {
  *
  * The input is decoded using the system default Charset. A [CharacterCodingException] is thrown if input is malformed.
  */
+@SinceKotlin("1.6")
 public actual fun readln(): String = readlnOrNull() ?: throw ReadAfterEOFException("EOF has already been reached")
 
 /**
@@ -158,6 +159,7 @@ public actual fun readln(): String = readlnOrNull() ?: throw ReadAfterEOFExcepti
  *
  * The input is decoded using the system default Charset. A [CharacterCodingException] is thrown if input is malformed.
  */
+@SinceKotlin("1.6")
 public actual fun readlnOrNull(): String? = readLine()
 
 /**
