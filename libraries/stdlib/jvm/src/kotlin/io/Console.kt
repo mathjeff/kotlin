@@ -153,7 +153,7 @@ public actual fun readln(): String = readlnOrNull() ?: throw ReadAfterEOFExcepti
 
 /**
  * Reads a line of input from the standard input stream and returns it,
- * or return `null` if EOF has already been reached when [readln] is called.
+ * or return `null` if EOF has already been reached when [readlnOrNull] is called.
  *
  * LF or CRLF is treated as the line terminator. Line terminator is not included in the returned string.
  *
