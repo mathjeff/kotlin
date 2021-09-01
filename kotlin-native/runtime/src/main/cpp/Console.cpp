@@ -70,10 +70,9 @@ OBJ_GETTER0(Kotlin_io_Console_readLine) {
 }
 
 OBJ_GETTER0(Kotlin_io_Console_readlnOrNull) {
-    size_t size = 0;
-    size_t capacity = 16;
+    KStdVector<char> data;
+    data.reserve(16);
     bool isEOF = false;
-    char *data = (char *) malloc(capacity);
     {
         kotlin::ThreadStateGuard guard(kotlin::ThreadState::kNative);
         while (true) {
@@ -83,29 +82,20 @@ OBJ_GETTER0(Kotlin_io_Console_readlnOrNull) {
                 isEOF = (result == EOF);
                 break;
             }
-            if (size == capacity) {
-                capacity = 2 * capacity;
-                char *newData = (char *) realloc(data, capacity);
-                if (newData == NULL) {
-                    free(data);
-                    ThrowIllegalStateException();
-                }
-                data = newData;
-            }
 
-            data[size++] = result;
+            data.push_back(result);
         }
         if (ferror(stdin) != 0) {
             ThrowIllegalStateException();
         }
     }
-    if (size > 0 && data[size - 1] == '\r') {
-        size--;
+    if (!data.empty() && data.back() == '\r') {
+        data.pop_back();
     }
-    if (size == 0 && isEOF) {
+    if (data.empty() && isEOF) {
         RETURN_OBJ(nullptr);
     }
-    RETURN_RESULT_OF(StringFromUtf8Buffer, data, size);
+    RETURN_RESULT_OF(StringFromUtf8Buffer, data.data(), data.size());
 }
 
 } // extern "C"
