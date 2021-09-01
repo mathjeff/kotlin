@@ -101,7 +101,7 @@ internal constructor(
             step == 1L -> unsignedIncrementAndClamp(last - first)
             step > 0 -> unsignedIncrementAndClamp((last - first) / step.toULong())
             step < 0 -> unsignedIncrementAndClamp((first - last) / (-step).toULong())
-            else -> error("Progression invariant is broken: step == 0")
+            else -> throw IllegalStateException("Progression invariant is broken: step == 0")
         }
 
     @SinceKotlin("1.6")

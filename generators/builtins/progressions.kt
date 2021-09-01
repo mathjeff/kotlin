@@ -75,7 +75,7 @@ class GenerateProgressions(out: PrintWriter) : BuiltInsSourceGenerator(out) {
             step == -$one -> unsignedIncrementAndClamp(first - last)
             step > 0 -> unsignedIncrementAndClamp(last - first, step)
             step < 0 -> unsignedIncrementAndClamp(first - last, -step)
-            else -> error("Progression invariant is broken: step == 0")
+            else -> throw IllegalStateException("Progression invariant is broken: step == 0")
         }""".trim()
                 }
 

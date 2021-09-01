@@ -578,7 +578,7 @@ class UnsignedRangeGenerator(val type: UnsignedType, out: PrintWriter) : BuiltIn
             step == $one -> unsignedIncrementAndClamp(last - first)
             step > 0 -> unsignedIncrementAndClamp((last - first) / step.to$elementType())
             step < 0 -> unsignedIncrementAndClamp((first - last) / (-step).to$elementType())
-            else -> error("Progression invariant is broken: step == 0")
+            else -> throw IllegalStateException("Progression invariant is broken: step == 0")
         }
 """.trim()
         out.println(
