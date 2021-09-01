@@ -21,6 +21,16 @@ class Abc {
 }
 
 @JsExport
+class Foo {
+    companion object {
+        fun xyz(): String = "Companion object method OK"
+
+        val prop: String
+            get() = "Companion object property OK"
+    }
+}
+
+@JsExport
 sealed class MyEnum(val name: String) {
     object A: MyEnum("A")
     object B: MyEnum("B")
@@ -30,10 +40,15 @@ sealed class MyEnum(val name: String) {
 // FILE: test.js
 
 function box() {
-    const companionObject = nestedObjectExport.Abc.AbcCompanion;
+    const abcCompanion = nestedObjectExport.Abc.AbcCompanion;
 
-    if (companionObject.xyz() != 'Companion object method OK') return 'companion object function failure';
-    if (companionObject.prop != 'Companion object property OK') return 'companion object property failure';
+    if (abcCompanion.xyz() != 'Companion object method OK') return 'companion object function failure';
+    if (abcCompanion.prop != 'Companion object property OK') return 'companion object property failure';
+
+    const justCompanion = nestedObjectExport.Foo.Companion;
+
+    if (justCompanion.xyz() != 'Companion object method OK') return 'companion object function failure';
+    if (justCompanion.prop != 'Companion object property OK') return 'companion object property failure';
 
     if (nestedObjectExport.MyEnum.A.name != 'A') return 'MyEnum.A failure';
     if (nestedObjectExport.MyEnum.B.name != 'B') return 'MyEnum.B failure';
