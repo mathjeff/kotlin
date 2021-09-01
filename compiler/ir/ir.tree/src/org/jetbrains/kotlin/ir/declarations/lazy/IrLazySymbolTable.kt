@@ -63,9 +63,11 @@ class IrLazySymbolTable(private val originalTable: SymbolTable) : ReferenceSymbo
     }
 
     override fun referenceTypeParameter(classifier: TypeParameterDescriptor): IrTypeParameterSymbol {
-        return originalTable.referenceTypeParameter(classifier).also {
-            if (!it.isBound) {
-                stubGenerator?.generateOrGetTypeParameterStub(classifier)
+        synchronized(lock) {
+            return originalTable.referenceTypeParameter(classifier).also {
+                if (!it.isBound) {
+                    stubGenerator?.generateOrGetTypeParameterStub(classifier)
+                }
             }
         }
     }
