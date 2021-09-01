@@ -754,6 +754,36 @@ standaloneTest("hello2") {
    source = "runtime/basic/hello2.kt"
 }
 
+standaloneTest("readln_empty") {
+    goldValue = "null"
+    testData = ""
+    source = "runtime/basic/readln.kt"
+}
+
+standaloneTest("readln_empty_new_line") {
+    goldValue = ""
+    testData = "\n"
+    source = "runtime/basic/readln.kt"
+}
+
+standaloneTest("readln_multiline") {
+    goldValue = "Hello World"
+    testData = "Hello World\nSecond line\nThird line"
+    source = "runtime/basic/readln.kt"
+}
+
+standaloneTest("readln_carriage_return") {
+    goldValue = "Hello World\rSecond line"
+    testData = "Hello World\rSecond line\r\nThird line"
+    source = "runtime/basic/readln.kt"
+}
+
+standaloneTest("readln_long_line") {
+    goldValue = "A very long line of input with length of more than initial buffer size"
+    testData = "A very long line of input with length of more than initial buffer size"
+    source = "runtime/basic/readln.kt"
+}
+
 task hello3(type: KonanLocalTest) {
     goldValue = "239\ntrue\n3.14159\nA\n"
     source = "runtime/basic/hello3.kt"

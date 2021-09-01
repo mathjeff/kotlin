@@ -104,3 +104,7 @@ public actual fun println(message: Any?) {
 public actual fun print(message: Any?) {
     output.print(message)
 }
+
+public actual fun readln(): String = throw UnsupportedOperationException("readln is not supported in Kotlin/JS")
+
+public actual fun readlnOrNull(): String? = throw UnsupportedOperationException("readlnOrNull is not supported in Kotlin/JS")

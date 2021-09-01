@@ -23,6 +23,10 @@ public actual fun print(message: Any?) {
     println(message)
 }
 
+public actual fun readln(): String = TODO("Wasm stdlib: IO")
+
+public actual fun readlnOrNull(): String? = TODO("Wasm stdlib: IO")
+
 
 internal actual interface Serializable
 
