@@ -1295,11 +1295,15 @@ object ArrayOps : TemplateGroupBase() {
         returns("Unit")
         doc { "Sorts the array in-place according to the order specified by the given [comparison] function." }
         specialFor(ArraysOfPrimitives) {
+            deprecate(Deprecation("Please use other sorting functions from the Standard Library", warningSince = "1.6"))
             inlineOnly()
             signature("sort(noinline comparison: (a: T, b: T) -> Int)")
             body { "asDynamic().sort(comparison)" }
         }
         specialFor(ArraysOfObjects) {
+            deprecate(
+                Deprecation("Please use sortWith instead", replaceWith = "this.sortWith(Comparator(comparison))", warningSince = "1.6")
+            )
             appendStableSortNote()
             body { """if (size > 1) sortArrayWith(this, comparison)""" }
         }
