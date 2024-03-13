@@ -162,7 +162,12 @@ abstract class KotlinCompile @Inject constructor(
     internal val scriptExtensions: SetProperty<String> = objectFactory.setPropertyWithLazyValue {
         scriptDefinitions
             .map { definitionFile ->
-                definitionFile.readLines().filter(String::isNotBlank)
+                val extensions = definitionFile.readLines().filter(String::isNotBlank)
+                val numExtensions = extensions.size
+                if (numExtensions > 0) {
+                    throw Exception("Read $numExtensions extensions from $definitionFile: $extensions")
+                }
+                extensions
             }
             .flatten()
     }
@@ -172,6 +177,10 @@ abstract class KotlinCompile @Inject constructor(
     ) : Spec<FileTreeElement> {
         override fun isSatisfiedBy(element: FileTreeElement): Boolean {
             val extensions = scriptExtensions.get()
+            val numExtensions = extensions.size
+            if (numExtensions > 0) {
+                throw Exception("ScriptFilterSpec has $numExtensions extensions: $extensions")
+            }
             return extensions.isNotEmpty() &&
                     (element.isDirectory || extensions.contains(element.file.extension))
         }
@@ -273,6 +282,10 @@ abstract class KotlinCompile @Inject constructor(
             val sourcesFiles = sources.asFileTree.files.toList()
             val javaSourcesFiles = javaSources.files.toList()
             val scriptSourcesFiles = scriptSources.asFileTree.files.toList()
+            val numScriptSourcesFiles = scriptSourcesFiles.size
+            if (numScriptSourcesFiles > 0) {
+                throw Exception("scriptSourcesFiles has $numScriptSourcesFiles files: $scriptSourcesFiles")
+            }
 
             if (logger.isInfoEnabled) {
                 logger.info("Kotlin source files: ${sourcesFiles.joinToString()}")
